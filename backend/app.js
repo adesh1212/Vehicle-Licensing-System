@@ -1,0 +1,40 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const vehicleRoutes = require("./routes/vehicle.js");
+const ownerRoutes = require("./routes/owner.js");
+const licenseRoutes = require("./routes/license.js");
+const cors = require("cors");
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+// MongoDB Connection
+const connectDB = async () => {
+  try {
+    const connectionInstance = await mongoose.connect(
+      "mongodb+srv://sawantadesh2003:admin@cluster0.jhkdx.mongodb.net/vls"
+    );
+    console.log(
+      `\n MongoDB connected !! DB HOST: ${connectionInstance.connection.host}`
+    );
+  } catch (error) {
+    console.log("MONGODB connection FAILED ", error);
+    process.exit(1);
+  }
+};
+
+// Use Routes
+app.use("/vehicles", vehicleRoutes);
+app.use("/owners", ownerRoutes);
+app.use("/licenses", licenseRoutes);
+
+connectDB()
+  .then(() => {
+    app.listen(8000, () => {
+      console.log("Server is running on port 8000");
+    });
+  })
+  .catch((err) => {
+    console.log("MONGO db connection failed !!! ", err);
+  });

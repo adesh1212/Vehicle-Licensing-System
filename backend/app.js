@@ -4,8 +4,10 @@ const vehicleRoutes = require("./routes/vehicle.js");
 const ownerRoutes = require("./routes/owner.js");
 const licenseRoutes = require("./routes/license.js");
 const cors = require("cors");
+require('dotenv').config();
 
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 
@@ -13,7 +15,7 @@ app.use(cors());
 const connectDB = async () => {
   try {
     const connectionInstance = await mongoose.connect(
-      "mongodb+srv://sawantadesh2003:admin@cluster0.jhkdx.mongodb.net/vls"
+      process.env.MONGO_URI
     );
     console.log(
       `\n MongoDB connected !! DB HOST: ${connectionInstance.connection.host}`

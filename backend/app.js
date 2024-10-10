@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const vehicleRoutes = require("./routes/vehicle.js");
 const ownerRoutes = require("./routes/owner.js");
 const licenseRoutes = require("./routes/license.js");
+const paymentRoutes = require("./routes/payment.js");
 const cors = require("cors");
 require('dotenv').config();
 
@@ -30,6 +31,7 @@ const connectDB = async () => {
 app.use("/vehicles", vehicleRoutes);
 app.use("/owners", ownerRoutes);
 app.use("/licenses", licenseRoutes);
+app.use("/payment", paymentRoutes);
 
 connectDB()
   .then(() => {

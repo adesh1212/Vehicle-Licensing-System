@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FaCar, FaUser, FaIdCard, FaCog, FaCalendarAlt } from "react-icons/fa"; // Importing icons
+import { toast } from "react-toastify";
 
 const VehicleRegistration = () => {
   const [vehicle, setVehicle] = useState({
@@ -21,17 +22,24 @@ const VehicleRegistration = () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/vehicles/register",
-        vehicle,
+        vehicle
       );
 
       if (response.status === 201) {
-        alert("Vehicle registered successfully!");
+        toast.success("Vehicle registered successfully!");
       } else {
-        alert("Failed to register vehicle");
+        toast.error("Failed to register vehicle");
       }
+      setVehicle({
+        make: "",
+        model: "",
+        year: "",
+        engineNumber: "",
+        owner: "",
+      });
     } catch (error) {
       console.error("Error registering vehicle:", error);
-      alert("Error during registration");
+      toast.error("Error during registration");
     }
   };
 
@@ -49,6 +57,7 @@ const VehicleRegistration = () => {
               name="make"
               placeholder="Vehicle Make"
               onChange={handleChange}
+              value={vehicle.make}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -61,6 +70,7 @@ const VehicleRegistration = () => {
               name="model"
               placeholder="Vehicle Model"
               onChange={handleChange}
+              value={vehicle.model}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -73,6 +83,7 @@ const VehicleRegistration = () => {
               name="year"
               placeholder="Year"
               onChange={handleChange}
+              value={vehicle.year}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -85,6 +96,7 @@ const VehicleRegistration = () => {
               name="engineNumber"
               placeholder="Engine Number"
               onChange={handleChange}
+              value={vehicle.engineNumber}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -97,6 +109,7 @@ const VehicleRegistration = () => {
               name="owner"
               placeholder="Owner ID"
               onChange={handleChange}
+              value={vehicle.owner}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />

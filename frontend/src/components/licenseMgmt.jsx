@@ -1,6 +1,7 @@
-// src/components/LicenseManagement.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import PaymentForm from "./payment"; // Import the PaymentForm
+import { toast } from "react-toastify";
 
 const LicenseManagement = () => {
   const [newLicense, setNewLicense] = useState({
@@ -10,25 +11,41 @@ const LicenseManagement = () => {
     licenseType: "",
     expirationDate: "",
   });
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [amount] = useState(10.0); // Set the amount to charge
 
   const handleChange = (e) => {
     setNewLicense({ ...newLicense, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setShowPaymentForm(true); // Show the payment form
+  };
+
+  const handlePaymentSuccess = async (paymentIntent) => {
     try {
-      await axios.post("http://localhost:8000/licenses/create", newLicense);
+      // After successful payment, send license data to the backend
+      console.log(paymentIntent);
+      await axios.post("http://localhost:8000/licenses/create", {
+        ...newLicense,
+        paymentId: paymentIntent.id,
+      });
+      setPaymentSuccess(true);
+      toast.success("License added successfully!"); 
+      setShowPaymentForm(false); // Hide payment form
+      // Optionally reset form
       setNewLicense({
         owner: "",
         vehicle: "",
         licenseNumber: "",
         licenseType: "",
         expirationDate: "",
-      }); // Clear form
-      fetchLicenses(); // Refresh license list
+      });
     } catch (error) {
       console.error("Error creating license:", error);
+       toast.error("Failed to add license");
     }
   };
 
@@ -84,6 +101,13 @@ const LicenseManagement = () => {
           Add License
         </button>
       </form>
+
+      {showPaymentForm && (
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold mb-4">Payment Details</h3>
+          <PaymentForm amount={amount} onSuccess={handlePaymentSuccess} />
+        </div>
+      )}
     </div>
   );
 };

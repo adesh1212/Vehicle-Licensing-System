@@ -10,7 +10,8 @@ const LicenseList = () => {
   useEffect(() => {
     const fetchLicenses = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/licenses"); // Adjust the API endpoint if necessary
+        const response = await axios.get("http://localhost:8000/licenses");
+        console.log(response) // Adjust the API endpoint if necessary
         setLicenses(response.data);
         setLoading(false);
       } catch (error) {
@@ -41,6 +42,7 @@ const LicenseList = () => {
             <tr>
               <th className="py-3 px-4 text-left">License Number</th>
               <th className="py-3 px-4 text-left">Owner ID</th>
+              <th className="py-3 px-4 text-left">Vehicle ID</th>
               <th className="py-3 px-4 text-left">License Type</th>
               <th className="py-3 px-4 text-left">Expiration Date</th>
             </tr>
@@ -50,6 +52,7 @@ const LicenseList = () => {
               <tr key={license.id} className="border-t hover:bg-gray-100">
                 <td className="py-2 px-4">{license.licenseNumber}</td>
                 <td className="py-2 px-4">{license.owner}</td>
+                <td className="py-2 px-4">{license.vehicle}</td>
                 <td className="py-2 px-4">{license.licenseType}</td>
                 <td className="py-2 px-4">
                   {new Date(license.expirationDate).toLocaleDateString()}

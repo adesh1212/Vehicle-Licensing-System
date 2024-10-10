@@ -7,8 +7,14 @@ const Vehicle = require("../models/Vehicle");
 
 // Create a new license
 router.post("/create", async (req, res) => {
-  const { owner, vehicle, licenseNumber, licenseType, expirationDate } =
-    req.body;
+  const {
+    owner,
+    vehicle,
+    licenseNumber,
+    licenseType,
+    expirationDate,
+    paymentId,
+  } = req.body;
 
   try {
     // Check if the owner exists
@@ -39,6 +45,8 @@ router.post("/create", async (req, res) => {
       licenseNumber,
       licenseType,
       expirationDate,
+      paymentId,
+      paymentStatus: "success",
     });
     await newLicense.save();
 

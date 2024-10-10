@@ -1,6 +1,7 @@
 // src/components/OwnerManagement.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const OwnerManagement = () => {
   const [newOwner, setNewOwner] = useState({
@@ -21,10 +22,12 @@ const OwnerManagement = () => {
         "http://localhost:8000/owners/register",
         newOwner
       );
-      setNewOwner({ name: "", address: "", contact: "" }); // Clear form
+      setNewOwner({ name: "", address: "", contact: "" });
+      toast.success("Owner added successfully!"); // Clear form
       fetchOwners(); // Refresh owner list
     } catch (error) {
       console.error("Error creating owner:", error);
+      toast.error(error); 
     }
   };
 
